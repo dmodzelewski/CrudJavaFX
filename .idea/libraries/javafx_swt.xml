@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="javafx-swt">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Desktop/javaprojekt/javafx-sdk-13/lib/javafx-swt.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javaprojekt/javafx-sdk-13/lib/javafx.base.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javaprojekt/javafx-sdk-13/lib/javafx.controls.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javaprojekt/javafx-sdk-13/lib/javafx.fxml.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javaprojekt/javafx-sdk-13/lib/javafx.graphics.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javaprojekt/javafx-sdk-13/lib/javafx.media.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javaprojekt/javafx-sdk-13/lib/javafx.swing.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javaprojekt/javafx-sdk-13/lib/javafx.web.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/javaprojekt/sqlite-jdbc-3.7.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Desktop/javaprojekt/sqlite-jdbc-3.7.2.jar!/" />
+    </SOURCES>
+  </library>
+</component>
