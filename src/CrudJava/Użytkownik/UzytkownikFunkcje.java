@@ -63,15 +63,15 @@ public class UzytkownikFunkcje {
         return uzytkownik;
     }
 
-    //Jeżeli usunę id się zmienia
     public static void UsunUzytkownika(String id) {
         String zapytanie = "Delete from osoba where id = " + id;
         Baza.WykonajPolecenieDB(zapytanie);
     }
 
-    public static void ZaktualizujUzytkownika(int id, String imie, String nazwisko, String Email, String Telefon, String DataUrodzenia) {
-//        String zapytanie = "Upadate osoba set " + id;
-//        Baza.WykonajPolecenieDB(zapytanie);
+    public static void ZaktualizujUzytkownika(String id, String imie, String nazwisko, String Email, String Telefon, String DataUrodzenia) {
+        String zapytanie = "UPDATE osoba SET imie = '" + imie + "' , nazwisko = '" + nazwisko + "' , email = '" + Email + "' , telefon = '" + Telefon + "' WHERE id = " + id;
+        Baza.WykonajPolecenieDB(zapytanie);
+
     }
 
     public static void ZaktualizujId(String id, int rozmiar) {
@@ -83,9 +83,4 @@ public class UzytkownikFunkcje {
         }
     }
 
-    public static void ZaktualizujDodawanie(int rozmiar) {
-        String zapytanie = "UPDATE osoba SET id = " + rozmiar++ + " WHERE id = " + rozmiar++;
-        Baza.WykonajPolecenieDB(zapytanie);
-
-    }
 }

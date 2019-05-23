@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="344.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CrudJava.ControllerBaza">
     <children>
-        <TextField fx:id="Id" layoutX="193.0" layoutY="41.0" prefHeight="25.0" prefWidth="67.0" promptText="ID" />
+        <TextField onKeyReleased="#WpisywanieDanychDoDzialania" fx:id="Id" layoutX="193.0" layoutY="41.0" prefHeight="25.0" prefWidth="67.0" promptText="ID" />
         <Label fx:id="LabelId" layoutX="194.0" layoutY="21.0" text="ID" />
         <Label layoutX="9.0" layoutY="231.0">
             <font>
@@ -23,11 +23,11 @@
         <Label layoutX="437.0" layoutY="19.0" text="Nowe Dane" visible="false" />
         <VBox layoutX="97.0" layoutY="24.0" spacing="4.0">
             <children>
-                <TextField fx:id="Imie" onKeyReleased="#WpisywanieDanychDoTabeli" prefHeight="25.0" prefWidth="79.0" promptText="Imie" />
-                <TextField fx:id="Nazwisko" onKeyReleased="#WpisywanieDanychDoTabeli" prefHeight="25.0" prefWidth="79.0" promptText="Nazwisko" />
-                <TextField fx:id="Email" onKeyReleased="#WpisywanieDanychDoTabeli" prefHeight="25.0" prefWidth="79.0" promptText="Email" />
-                <TextField fx:id="Telefon" onKeyReleased="#WpisywanieDanychDoTabeli" prefHeight="25.0" prefWidth="79.0" promptText="Telefon" />
-                <TextField fx:id="DataUrodzenia" onKeyReleased="#WpisywanieDanychDoTabeli" prefHeight="25.0" prefWidth="79.0" promptText="Data Urodzenia" />
+                <TextField fx:id="Imie" onKeyTyped="#ImieWalidacja" onKeyReleased="#WpisywanieDanychDoDodawania" prefHeight="25.0" prefWidth="79.0" promptText="Imie" />
+                <TextField fx:id="Nazwisko" onKeyReleased="#WpisywanieDanychDoDodawania" prefHeight="25.0" prefWidth="79.0" promptText="Nazwisko" />
+                <TextField fx:id="Email" onKeyReleased="#WpisywanieDanychDoDodawania" prefHeight="25.0" prefWidth="79.0" promptText="Email" />
+                <TextField fx:id="Telefon" onKeyReleased="#WpisywanieDanychDoDodawania" prefHeight="25.0" prefWidth="79.0" promptText="Telefon" />
+                <TextField fx:id="DataUrodzenia" onKeyReleased="#WpisywanieDanychDoDodawania" prefHeight="25.0" prefWidth="79.0" promptText="Data Urodzenia" />
                 <Button fx:id="dodajUzytkownika" layoutX="97.0" layoutY="181.0" mnemonicParsing="false" onAction="#DodajUzytkownika" text="Dodaj" />
             </children>
         </VBox>
@@ -62,16 +62,16 @@
         </ToolBar>
         <ToolBar fx:id="noweDane" layoutX="187.0" layoutY="34.0" prefHeight="40.0" prefWidth="440.0">
             <items>
-                <TextField prefHeight="25.0" prefWidth="80.0" promptText="Imię" />
-                <TextField prefHeight="25.0" prefWidth="80.0" promptText="Nazwisko" />
-                <TextField prefHeight="25.0" prefWidth="80.0" promptText="Email" />
-                <TextField prefHeight="25.0" prefWidth="80.0" promptText="Telefon" />
-                <TextField prefHeight="25.0" prefWidth="80.0" promptText="Data Urodzenia" />
+                <TextField fx:id="Uimie" prefHeight="25.0" prefWidth="80.0" promptText="Imię" onKeyReleased="#WpisywanieDanychDoUaktualniania" />
+                <TextField fx:id="Unazwisko" prefHeight="25.0" prefWidth="80.0" promptText="Nazwisko" onKeyReleased="#WpisywanieDanychDoUaktualniania" />
+                <TextField fx:id="UEmail" prefHeight="25.0" prefWidth="80.0" promptText="Email" onKeyReleased="#WpisywanieDanychDoUaktualniania" />
+                <TextField fx:id="Utelefon" prefHeight="25.0" prefWidth="80.0" promptText="Telefon" onKeyReleased="#WpisywanieDanychDoUaktualniania"/>
+                <TextField fx:id="UDataUrodzenia" prefHeight="25.0" prefWidth="80.0" promptText="Data Urodzenia" onKeyReleased="#WpisywanieDanychDoUaktualniania"/>
             </items>
         </ToolBar>
       <ToolBar fx:id="PanelPotwierdzenia" layoutX="426.0" layoutY="75.0" prefHeight="40.0" prefWidth="201.0">
         <items>
-          <Button fx:id="Potwierdz" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="Potwierdż" />
+          <Button fx:id="Potwierdz" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="Potwierdż" onAction="#Zaktualizuj"/>
             <Button fx:id="Anuluj"  mnemonicParsing="false" prefHeight="25.0" prefWidth="89.0" text="Anuluj" onAction="#Anuluj" />
         </items>
       </ToolBar>
