@@ -107,7 +107,8 @@ public class ControllerBaza {
         String textTelefon = Telefon.getText();
         String textDataurodzenia = DataUrodzenia.getText();
         boolean imiePoprawnosc = textImie.isEmpty() | textImie.trim().isEmpty();
-        ImieWalidacja();
+        Walidacja(Imie);
+        Walidacja(Nazwisko);
         boolean nazwiskoPoprawnosc = textNazwisko.isEmpty() | textNazwisko.trim().isEmpty();
         boolean emailPoprawnosc = textEmail.isEmpty() | textEmail.trim().isEmpty();
         boolean telefonPoprawnosc = textTelefon.isEmpty() | textTelefon.trim().isEmpty();
@@ -121,13 +122,12 @@ public class ControllerBaza {
     }
 
     @FXML
-    void ImieWalidacja() {
+    void Walidacja(TextField textField) {
        TextFormatter<String> formatSlow = new TextFormatter<String>(change -> {
           change.setText(change.getText().replaceFirst("^[^A-Za-z]+$",""));
        return change;
        });
-       Imie.setTextFormatter(formatSlow);
-
+       textField.setTextFormatter(formatSlow);
     }
     @FXML
     void DuzeLitery(TextField textField) {
@@ -153,7 +153,7 @@ public class ControllerBaza {
                 DuzeLitery(Nazwisko);
             }
         });
-        Imie.focusedProperty().addListener((arg , stary ,zmien) ->{
+        Nazwisko.focusedProperty().addListener((arg , stary ,zmien) ->{
             if (!zmien){
                 DuzeLitery(Nazwisko);
             }
