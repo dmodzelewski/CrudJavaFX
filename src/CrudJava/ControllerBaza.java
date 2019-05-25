@@ -106,7 +106,8 @@ public class ControllerBaza {
         String textEmail = Email.getText();
         String textTelefon = Telefon.getText();
         String textDataurodzenia = DataUrodzenia.getText();
-        boolean imiePoprawnosc = textImie.isEmpty() | textImie.trim().isEmpty() |  ImieWalidacja();;
+        boolean imiePoprawnosc = textImie.isEmpty() | textImie.trim().isEmpty();
+        ImieWalidacja();
         boolean nazwiskoPoprawnosc = textNazwisko.isEmpty() | textNazwisko.trim().isEmpty();
         boolean emailPoprawnosc = textEmail.isEmpty() | textEmail.trim().isEmpty();
         boolean telefonPoprawnosc = textTelefon.isEmpty() | textTelefon.trim().isEmpty();
@@ -116,19 +117,45 @@ public class ControllerBaza {
         Telefon.setDisable(emailPoprawnosc);
         DataUrodzenia.setDisable(telefonPoprawnosc);
         dodajUzytkownika.setDisable(DataUrodzzeniaPoprawnosc);
-        EnterSwitch();
+        SwitchField();
     }
 
     @FXML
-    public void EnterSwitch() {
+    void ImieWalidacja() {
+       TextFormatter<String> formatSlow = new TextFormatter<String>(change -> {
+          change.setText(change.getText().replaceFirst("^[^A-Za-z]+$",""));
+       return change;
+       });
+       Imie.setTextFormatter(formatSlow);
+
+    }
+    @FXML
+    void DuzeLitery(TextField textField) {
+    String duze = textField.getText();
+    textField.setText(duze.substring(0,1).toUpperCase() +duze.substring(1));
+    }
+    @FXML
+    public void SwitchField() {
         Imie.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode().equals(KeyCode.ENTER)) {
                 Nazwisko.requestFocus();
+                DuzeLitery(Imie);
             }
+        });
+        Imie.focusedProperty().addListener((arg , stary ,zmien) ->{
+           if (!zmien){
+               DuzeLitery(Imie);
+           }
         });
         Nazwisko.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode().equals(KeyCode.ENTER)) {
                 Email.requestFocus();
+                DuzeLitery(Nazwisko);
+            }
+        });
+        Imie.focusedProperty().addListener((arg , stary ,zmien) ->{
+            if (!zmien){
+                DuzeLitery(Nazwisko);
             }
         });
         Email.setOnKeyPressed(keyEvent -> {
@@ -179,13 +206,6 @@ public class ControllerBaza {
         Potwierdz.setDisable(DataUrodzzeniaPoprawnosc);
     }
 
-    @FXML
-    public boolean ImieWalidacja() {
-
-        if (Imie.getText().matches("^[a-zA-Z]*$")) {
-            return false;
-        } else return true;
-    }
 
     @FXML
     public void DodajUzytkownika(ActionEvent actionEvent) {
@@ -219,6 +239,8 @@ public class ControllerBaza {
             Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Wpisz Id!", ButtonType.OK);
             BrakDanych.setTitle("Błąd");
             BrakDanych.show();
+            UaktualnijPrzycisk.setDisable(true);
+            UsuńPrzycisk.setDisable(true);
         } else {
 
             ObservableList<Uzytkownik> dane = UzytkownikFunkcje.WyszukajUzytkownika(id);

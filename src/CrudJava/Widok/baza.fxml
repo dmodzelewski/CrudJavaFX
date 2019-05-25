@@ -23,7 +23,7 @@
         <Label layoutX="437.0" layoutY="19.0" text="Nowe Dane" visible="false" />
         <VBox layoutX="97.0" layoutY="24.0" spacing="4.0">
             <children>
-                <TextField fx:id="Imie" onKeyTyped="#ImieWalidacja" onKeyReleased="#WpisywanieDanychDoDodawania" prefHeight="25.0" prefWidth="79.0" promptText="Imie" />
+                <TextField fx:id="Imie"  onKeyReleased="#WpisywanieDanychDoDodawania" prefHeight="25.0" prefWidth="79.0" promptText="Imie" />
                 <TextField fx:id="Nazwisko" onKeyReleased="#WpisywanieDanychDoDodawania" prefHeight="25.0" prefWidth="79.0" promptText="Nazwisko" />
                 <TextField fx:id="Email" onKeyReleased="#WpisywanieDanychDoDodawania" prefHeight="25.0" prefWidth="79.0" promptText="Email" />
                 <TextField fx:id="Telefon" onKeyReleased="#WpisywanieDanychDoDodawania" prefHeight="25.0" prefWidth="79.0" promptText="Telefon" />
