@@ -5,7 +5,7 @@ import java.sql.*;
 public class Baza {
 
     public static final String DRIVER = "org.sqlite.JDBC";
-    public static final String DB_URL = "jdbc:sqlite:dobr.db";
+    public static final String DB_URL = "jdbc:sqlite:bb.db";
 
     private static Connection conn;
     private static Statement stmt;

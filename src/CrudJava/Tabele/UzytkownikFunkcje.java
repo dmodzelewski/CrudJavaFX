@@ -1,4 +1,4 @@
-package CrudJava.Użytkownik;
+package CrudJava.Tabele;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

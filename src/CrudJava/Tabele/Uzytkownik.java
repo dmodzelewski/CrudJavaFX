@@ -1,4 +1,4 @@
-package CrudJava.Użytkownik;
+package CrudJava.Tabele;
 
 import javafx.beans.property.SimpleStringProperty;
 

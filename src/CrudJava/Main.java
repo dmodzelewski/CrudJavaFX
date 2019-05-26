@@ -18,30 +18,17 @@ public class Main extends Application {
     public void start(Stage scena) throws Exception {
         this.scena = scena;
         inicjalizacja();
-        wyswietlScene();
-
     }
 
 
     public void inicjalizacja() {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("Widok/panel.fxml"));
+            loader.setLocation(Main.class.getResource("Widok/baza.fxml"));
             panel = (BorderPane) loader.load();
             Scene scene = new Scene(panel);
             scena.setScene(scene);
             scena.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void wyswietlScene() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("Widok/baza.fxml"));
-            AnchorPane widok = (AnchorPane) loader.load();
-            panel.setCenter(widok);
         } catch (IOException e) {
             e.printStackTrace();
         }
