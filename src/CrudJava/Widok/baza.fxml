@@ -103,7 +103,7 @@
         </ToolBar>
       <ToolBar fx:id="PanelPotwierdzenia" layoutX="480.0" layoutY="95.0" prefHeight="40.0" prefWidth="201.0">
         <items>
-          <Button fx:id="Potwierdz" mnemonicParsing="false" onAction="#Zaktualizuj" prefHeight="25.0" prefWidth="94.0" text="Potwierdż" />
+          <Button fx:id="Potwierdz" mnemonicParsing="false" onAction="#ZaktualizujUzytkownika" prefHeight="25.0" prefWidth="94.0" text="Potwierdż" />
             <Button fx:id="Anuluj" mnemonicParsing="false" onAction="#Anuluj" prefHeight="25.0" prefWidth="89.0" text="Anuluj" />
         </items>
       </ToolBar>

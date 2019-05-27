@@ -62,12 +62,12 @@ public class AdresFunkcje {
     }
 
     public static void UsunUzytkownika(String id) {
-        String zapytanie = "Delete from osoba where id = " + id;
+        String zapytanie = "Delete from adres where id = " + id;
         Baza.WykonajPolecenieDB(zapytanie);
     }
 
-    public static void ZaktualizujUzytkownika(String id, String imie, String nazwisko, String Email, String Telefon, String DataUrodzenia) {
-        String zapytanie = "UPDATE osoba SET imie = '" + imie + "' , nazwisko = '" + nazwisko + "' , email = '" + Email + "' , telefon = '" + Telefon + "' WHERE id = " + id;
+    public static void ZaktualizujUzytkownika(String id, String imie, String nazwisko, String Email, String Telefon) {
+        String zapytanie = "UPDATE adres SET miasto = '" + imie + "' , ulica = '" + nazwisko + "' , nrDomu = '" + Email + "' , KodPocztowy = '" + Telefon + "' WHERE id = " + id;
         Baza.WykonajPolecenieDB(zapytanie);
 
     }
@@ -76,7 +76,7 @@ public class AdresFunkcje {
         int nowe = Integer.parseInt(id) + 1;
         int biezace = Integer.parseInt(id);
         for (int i = 0; i < rozmiar; i++) {
-            String zapytanie = "UPDATE osoba SET id = " + biezace++ + " WHERE id = " + nowe++;
+            String zapytanie = "UPDATE adres SET id = " + biezace++ + " WHERE id = " + nowe++;
             Baza.WykonajPolecenieDB(zapytanie);
         }
     }

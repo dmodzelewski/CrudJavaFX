@@ -173,6 +173,7 @@ public class ControllerBaza {
         dodajUzytkownika.setDisable(DataUrodzzeniaPoprawnosc);
         SwitchField();
     }
+
     @FXML
     public void WpisywanieDanychDoDodawaniaAdresu() {
         String textMiasto = Miasto.getText();
@@ -192,6 +193,7 @@ public class ControllerBaza {
         dodajAdres.setDisable(idOsobyPoprawnosc);
 //        SwitchField();
     }
+
     @FXML
     void Walidacja(TextField textField) {
         if (textField == Imie || textField == Nazwisko) {
@@ -336,6 +338,7 @@ public class ControllerBaza {
         WpisywanieDanychDoDodawaniaUzytkownika();
         Imie.requestFocus();
     }
+
     @FXML
     public void DodajAdres(ActionEvent actionEvent) {
         if (idAdres == 1 && AdresFunkcje.WyszukajUzytkownikow().size() == 0) {
@@ -354,6 +357,7 @@ public class ControllerBaza {
         WpisywanieDanychDoDodawaniaAdresu();
         Miasto.requestFocus();
     }
+
     @FXML
     public void Wyswietl() {
         ObservableList<Uzytkownik> dane = UzytkownikFunkcje.WyszukajUzytkownikow();
@@ -375,7 +379,7 @@ public class ControllerBaza {
 
             ObservableList<Uzytkownik> dane = UzytkownikFunkcje.WyszukajUzytkownika(id);
             ObservableList<Adres> dane1 = AdresFunkcje.WyszukajUzytkownika(id);
-            if (dane.size() == 1||dane1.size() == 1) {
+            if (dane.size() == 1 || dane1.size() == 1) {
                 UaktualnijPrzycisk.setDisable(false);
                 UsuńPrzycisk.setDisable(false);
             } else {
@@ -398,29 +402,55 @@ public class ControllerBaza {
         alert.setHeaderText("Czy na pewno chcesz usunąć rekord?");
         Optional<ButtonType> wynik = alert.showAndWait();
         if (wynik.get() == ButtonType.YES) {
-            if (UzytkownikFunkcje.WyszukajUzytkownikow().size() > 0) {
-                if (idUzytkownik >= 1 && UzytkownikFunkcje.WyszukajUzytkownikow().size() >= 1) {
-                    idUzytkownik--;
-                    String id = Id.getText();
-                    if (id.isEmpty()) {
-                        Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie Mozna usunąć nieistniejącej tabeli!", ButtonType.OK);
-                        BrakDanych.setTitle("Błąd");
-                        BrakDanych.show();
+            if (TabelaAdres.isVisible()) {
+                if (AdresFunkcje.WyszukajUzytkownikow().size() > 0) {
+                    if (idAdres >= 1 && AdresFunkcje.WyszukajUzytkownikow().size() >= 1) {
+                        idAdres--;
+                        String id = Id.getText();
+                        if (id.isEmpty()) {
+                            Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie Mozna usunąć nieistniejącej tabeli!", ButtonType.OK);
+                            BrakDanych.setTitle("Błąd");
+                            BrakDanych.show();
+                        } else {
+                            AdresFunkcje.UsunUzytkownika(id);
+                            int rozmiar = AdresFunkcje.WyszukajUzytkownikow().size();
+                            AdresFunkcje.ZaktualizujId(id, rozmiar);
+                        }
                     } else {
-                        UzytkownikFunkcje.UsunUzytkownika(id);
-                        int rozmiar = UzytkownikFunkcje.WyszukajUzytkownikow().size();
-                        UzytkownikFunkcje.ZaktualizujId(id, rozmiar);
+                        idAdres = 1;
                     }
+
                 } else {
-                    idUzytkownik = 1;
+                    Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Brak Adresu w tabeli!", ButtonType.OK);
+                    BrakDanych.setTitle("Błąd");
+                    BrakDanych.show();
                 }
 
             } else {
-                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Brak użytkowników w tabeli!", ButtonType.OK);
-                BrakDanych.setTitle("Błąd");
-                BrakDanych.show();
-            }
+                if (UzytkownikFunkcje.WyszukajUzytkownikow().size() > 0) {
+                    if (idUzytkownik >= 1 && UzytkownikFunkcje.WyszukajUzytkownikow().size() >= 1) {
+                        idUzytkownik--;
+                        String id = Id.getText();
+                        if (id.isEmpty()) {
+                            Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie Mozna usunąć nieistniejącej tabeli!", ButtonType.OK);
+                            BrakDanych.setTitle("Błąd");
+                            BrakDanych.show();
+                        } else {
+                            UzytkownikFunkcje.UsunUzytkownika(id);
+                            int rozmiar = UzytkownikFunkcje.WyszukajUzytkownikow().size();
+                            UzytkownikFunkcje.ZaktualizujId(id, rozmiar);
+                        }
+                    } else {
+                        idUzytkownik = 1;
+                    }
 
+                } else {
+                    Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Brak użytkowników w tabeli!", ButtonType.OK);
+                    BrakDanych.setTitle("Błąd");
+                    BrakDanych.show();
+                }
+
+            }
         }
     }
 
@@ -460,7 +490,7 @@ public class ControllerBaza {
     }
 
     @FXML
-    void Zaktualizuj() {
+    void ZaktualizujUzytkownika() {
         String id = Id.getText();
         String textImie = Uimie.getText();
         String textNazwisko = Unazwisko.getText();
@@ -516,7 +546,7 @@ public class ControllerBaza {
     }
 
     @FXML
-    public void WybierzOsoba(){
+    public void WybierzOsoba() {
         TabelaOsoba.setVisible(true);
         OsobaInfo.setVisible(true);
         OsobaText.setVisible(true);
@@ -526,8 +556,9 @@ public class ControllerBaza {
         dodajUzytkownika.setVisible(true);
         dodajAdres.setVisible(false);
     }
+
     @FXML
-    public void WybierzAdres(){
+    public void WybierzAdres() {
         TabelaOsoba.setVisible(false);
         OsobaInfo.setVisible(false);
         OsobaText.setVisible(false);
@@ -537,6 +568,7 @@ public class ControllerBaza {
         dodajUzytkownika.setVisible(false);
         dodajAdres.setVisible(true);
     }
+
     @FXML
     public void Informacje(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
