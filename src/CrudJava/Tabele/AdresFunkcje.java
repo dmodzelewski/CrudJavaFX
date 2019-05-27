@@ -12,7 +12,7 @@ public class AdresFunkcje {
         try {
             String dodanieTabeli = "CREATE TABLE IF NOT EXISTS adres(id INTEGER , miasto VARCHAR(20), ulica VARCHAR(20), nrDomu VARCHAR(20), KodPocztowy VARCHAR(20),idOsoby INTEGER , FOREIGN KEY(idOsoby) REFERENCES osoba(id))";
             Baza.WykonajPolecenieDB(dodanieTabeli);
-            String dodanie = "INSERT INTO adres (id,miasto,ulica,nrDomu,kodPocztowy,idOsoby) VALUES ('" + id + "','" + miasto + "','" + ulica+ "','" + nrDomu+ "','" + kodPocztowy+ "','" + idOsoby+ "')";
+            String dodanie = "INSERT INTO adres (id,miasto,ulica,nrDomu,kodPocztowy,idOsoby) VALUES ('" + id + "','" + miasto + "','" + ulica + "','" + nrDomu + "','" + kodPocztowy + "','" + idOsoby + "')";
             Baza.WykonajPolecenieDB(dodanie);
         } catch (Exception e) {
             System.out.println(e);

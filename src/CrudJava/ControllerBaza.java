@@ -213,7 +213,7 @@ public class ControllerBaza {
                 return change;
             });
             textField.setTextFormatter(formatSlow);
-        } else if (textField == Telefon|| textField == idOsoby) {
+        } else if (textField == Telefon || textField == idOsoby) {
             TextFormatter<String> formatSlow = new TextFormatter<String>(change -> {
                 change.setText(change.getText().replaceFirst("^[^0-9]+$", ""));
                 return change;
@@ -331,11 +331,12 @@ public class ControllerBaza {
         Potwierdz.setDisable(DataUrodzzeniaPoprawnosc);
 
     }
+
     @FXML
     public void WpisywanieDanychDoUaktualnianiaAdresu() {
         String textMiasto = UMiasto.getText();
         String textUlica = UUlica.getText();
-        String textNumerDomu =UNumerDomu.getText();
+        String textNumerDomu = UNumerDomu.getText();
         String textKodPocztowy = UKodPocztowy.getText();
 
         boolean miastoPoprawnosc = textMiasto.isEmpty() | textMiasto.trim().isEmpty();
@@ -604,8 +605,6 @@ public class ControllerBaza {
                 BrakDanych.setTitle("Błąd");
                 BrakDanych.show();
             }
-
-
             if (UMiasto == NullPointerException && UUlica == NullPointerException && UNumerDomu == NullPointerException && UKodPocztowy == NullPointerException) {
                 Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wprowadzono danych do aktualizacji", ButtonType.OK);
                 BrakDanych.setTitle("Błąd");

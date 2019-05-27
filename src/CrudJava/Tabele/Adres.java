@@ -13,7 +13,7 @@ public class Adres {
     public Adres() {
         this.idAdres = new SimpleStringProperty();
         this.miasto = new SimpleStringProperty();
-        this.ulica= new SimpleStringProperty();
+        this.ulica = new SimpleStringProperty();
         this.numerDomu = new SimpleStringProperty();
         this.kodPocztowy = new SimpleStringProperty();
         this.idOsoba = new SimpleStringProperty();
