@@ -50,6 +50,14 @@ public class ControllerBaza {
     @FXML
     private TextField UDataUrodzenia;
     @FXML
+    private TextField UMiasto;
+    @FXML
+    private TextField UUlica;
+    @FXML
+    private TextField UNumerDomu;
+    @FXML
+    private TextField UKodPocztowy;
+    @FXML
     private Button Anuluj;
     @FXML
     private Button dodajUzytkownika;
@@ -95,6 +103,8 @@ public class ControllerBaza {
     private TableColumn<Adres, String> idOsobaIdTabela;
     @FXML
     private ToolBar noweDane;
+    @FXML
+    private ToolBar noweDane1;
     @FXML
     private ToolBar PanelZarzadzania;
     @FXML
@@ -182,6 +192,7 @@ public class ControllerBaza {
         String textKodPocztowy = KodPocztowy.getText();
         String textidOsoba = idOsoby.getText();
         boolean miastoPoprawnosc = textMiasto.isEmpty() | textMiasto.trim().isEmpty();
+        Walidacja(idOsoby);
         boolean ulicaPoprawnosc = textUlica.isEmpty() | textUlica.trim().isEmpty();
         boolean numerDomuPoprawnosc = textNumerDomu.isEmpty() | textNumerDomu.trim().isEmpty();
         boolean KodPocztowyPoprawnosc = textKodPocztowy.isEmpty() | textKodPocztowy.trim().isEmpty();
@@ -202,7 +213,7 @@ public class ControllerBaza {
                 return change;
             });
             textField.setTextFormatter(formatSlow);
-        } else if (textField == Telefon) {
+        } else if (textField == Telefon|| textField == idOsoby) {
             TextFormatter<String> formatSlow = new TextFormatter<String>(change -> {
                 change.setText(change.getText().replaceFirst("^[^0-9]+$", ""));
                 return change;
@@ -300,7 +311,7 @@ public class ControllerBaza {
     }
 
     @FXML
-    public void WpisywanieDanychDoUaktualniania() {
+    public void WpisywanieDanychDoUaktualnianiaUzytkownika() {
         String id = Id.getText();
         String textImie = Uimie.getText();
         String textNazwisko = Unazwisko.getText();
@@ -318,6 +329,25 @@ public class ControllerBaza {
         Utelefon.setDisable(emailPoprawnosc);
         UDataUrodzenia.setDisable(telefonPoprawnosc);
         Potwierdz.setDisable(DataUrodzzeniaPoprawnosc);
+
+    }
+    @FXML
+    public void WpisywanieDanychDoUaktualnianiaAdresu() {
+        String textMiasto = UMiasto.getText();
+        String textUlica = UUlica.getText();
+        String textNumerDomu =UNumerDomu.getText();
+        String textKodPocztowy = UKodPocztowy.getText();
+
+        boolean miastoPoprawnosc = textMiasto.isEmpty() | textMiasto.trim().isEmpty();
+        Walidacja(idOsoby);
+        boolean ulicaPoprawnosc = textUlica.isEmpty() | textUlica.trim().isEmpty();
+        boolean numerDomuPoprawnosc = textNumerDomu.isEmpty() | textNumerDomu.trim().isEmpty();
+        boolean KodPocztowyPoprawnosc = textKodPocztowy.isEmpty() | textKodPocztowy.trim().isEmpty();
+        UUlica.setDisable(miastoPoprawnosc);
+        UNumerDomu.setDisable(ulicaPoprawnosc);
+        UKodPocztowy.setDisable(numerDomuPoprawnosc);
+        Potwierdz.setDisable(KodPocztowyPoprawnosc);
+
     }
 
     @FXML
@@ -329,7 +359,7 @@ public class ControllerBaza {
             idUzytkownik = UzytkownikFunkcje.WyszukajUzytkownikow().size() + 1;
             UzytkownikFunkcje.DodajUzytkownika(idUzytkownik++, Imie.getText(), Nazwisko.getText(), Email.getText(), Telefon.getText(), DataUrodzenia.getText());
         }
-        Wyswietl();
+        WyswietlWszystkich();
         Imie.deleteText(0, Imie.getText().length());
         Nazwisko.deleteText(0, Nazwisko.getText().length());
         Email.deleteText(0, Email.getText().length());
@@ -348,7 +378,7 @@ public class ControllerBaza {
             idAdres = AdresFunkcje.WyszukajUzytkownikow().size() + 1;
             AdresFunkcje.DodajUzytkownika(idAdres++, Miasto.getText(), Ulica.getText(), NumerDomu.getText(), KodPocztowy.getText(), Integer.parseInt(idOsoby.getText()));
         }
-        Wyswietl();
+        WyswietlWszystkich();
         Miasto.deleteText(0, Miasto.getText().length());
         Ulica.deleteText(0, Ulica.getText().length());
         NumerDomu.deleteText(0, NumerDomu.getText().length());
@@ -359,11 +389,15 @@ public class ControllerBaza {
     }
 
     @FXML
-    public void Wyswietl() {
-        ObservableList<Uzytkownik> dane = UzytkownikFunkcje.WyszukajUzytkownikow();
-        ObservableList<CrudJava.Tabele.Adres> dane1 = AdresFunkcje.WyszukajUzytkownikow();
-        TabelaOsoba.setItems(dane);
-        TabelaAdres.setItems(dane1);
+    public void WyswietlWszystkich() {
+        if (TabelaAdres.isVisible()) {
+            ObservableList<CrudJava.Tabele.Adres> dane = AdresFunkcje.WyszukajUzytkownikow();
+            TabelaAdres.setItems(dane);
+
+        } else {
+            ObservableList<Uzytkownik> dane = UzytkownikFunkcje.WyszukajUzytkownikow();
+            TabelaOsoba.setItems(dane);
+        }
     }
 
     @FXML
@@ -376,22 +410,33 @@ public class ControllerBaza {
             UaktualnijPrzycisk.setDisable(true);
             UsuńPrzycisk.setDisable(true);
         } else {
-
-            ObservableList<Uzytkownik> dane = UzytkownikFunkcje.WyszukajUzytkownika(id);
-            ObservableList<Adres> dane1 = AdresFunkcje.WyszukajUzytkownika(id);
-            if (dane.size() == 1 || dane1.size() == 1) {
-                UaktualnijPrzycisk.setDisable(false);
-                UsuńPrzycisk.setDisable(false);
+            if (TabelaAdres.isVisible()) {
+                ObservableList<Adres> dane = AdresFunkcje.WyszukajUzytkownika(id);
+                if (dane.size() == 1) {
+                    UaktualnijPrzycisk.setDisable(false);
+                    UsuńPrzycisk.setDisable(false);
+                } else {
+                    UaktualnijPrzycisk.setDisable(true);
+                    UsuńPrzycisk.setDisable(true);
+                    Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Brak adresu o ID równym " + id, ButtonType.OK);
+                    BrakDanych.setTitle("Błąd");
+                    BrakDanych.show();
+                }
+                TabelaAdres.setItems(dane);
             } else {
-                UaktualnijPrzycisk.setDisable(true);
-                UsuńPrzycisk.setDisable(true);
-                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Brak danych o ID równym " + id, ButtonType.OK);
-                BrakDanych.setTitle("Błąd");
-                BrakDanych.show();
+                ObservableList<Uzytkownik> dane = UzytkownikFunkcje.WyszukajUzytkownika(id);
+                if (dane.size() == 1) {
+                    UaktualnijPrzycisk.setDisable(false);
+                    UsuńPrzycisk.setDisable(false);
+                } else {
+                    UaktualnijPrzycisk.setDisable(true);
+                    UsuńPrzycisk.setDisable(true);
+                    Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Brak Użytkownika o ID równym " + id, ButtonType.OK);
+                    BrakDanych.setTitle("Błąd");
+                    BrakDanych.show();
+                }
+                TabelaOsoba.setItems(dane);
             }
-            TabelaOsoba.setItems(dane);
-            TabelaAdres.setItems(dane1);
-
         }
     }
 
@@ -452,41 +497,74 @@ public class ControllerBaza {
 
             }
         }
+        WyswietlWszystkich();
     }
 
     @FXML
     public void Uaktualnij() {
         String id = Id.getText();
-        if (id.isEmpty()) {
-            Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie Mozna zaktualizować nieistniejącej tabeli!", ButtonType.OK);
-            BrakDanych.setTitle("Błąd");
-            BrakDanych.show();
+        if (TabelaAdres.isVisible()) {
+            if (id.isEmpty()) {
+                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie Mozna zaktualizować nieistniejącej tabeli!", ButtonType.OK);
+                BrakDanych.setTitle("Błąd");
+                BrakDanych.show();
+            } else {
+                noweDane1.setVisible(true);
+                Potwierdz.setVisible(true);
+                WyszukajPrzycisk.setVisible(false);
+                UsuńPrzycisk.setVisible(false);
+                UaktualnijPrzycisk.setVisible(false);
+                wyszukajWszystkichPrzycisk.setVisible(false);
+                PanelPotwierdzenia.setVisible(true);
+                PanelZarzadzania.setVisible(false);
+                Id.setVisible(false);
+                LabelId.setVisible(false);
+            }
         } else {
-            noweDane.setVisible(true);
-            Potwierdz.setVisible(true);
-            WyszukajPrzycisk.setVisible(false);
-            UsuńPrzycisk.setVisible(false);
-            UaktualnijPrzycisk.setVisible(false);
-            wyszukajWszystkichPrzycisk.setVisible(false);
-            PanelPotwierdzenia.setVisible(true);
-            PanelZarzadzania.setVisible(false);
-            Id.setVisible(false);
-            LabelId.setVisible(false);
+            if (id.isEmpty()) {
+                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie Mozna zaktualizować nieistniejącej tabeli!", ButtonType.OK);
+                BrakDanych.setTitle("Błąd");
+                BrakDanych.show();
+            } else {
+                noweDane.setVisible(true);
+                Potwierdz.setVisible(true);
+                WyszukajPrzycisk.setVisible(false);
+                UsuńPrzycisk.setVisible(false);
+                UaktualnijPrzycisk.setVisible(false);
+                wyszukajWszystkichPrzycisk.setVisible(false);
+                PanelPotwierdzenia.setVisible(true);
+                PanelZarzadzania.setVisible(false);
+                Id.setVisible(false);
+                LabelId.setVisible(false);
+            }
         }
     }
 
     @FXML
     public void Anuluj() {
-        noweDane.setVisible(false);
-        Potwierdz.setVisible(false);
-        WyszukajPrzycisk.setVisible(true);
-        UsuńPrzycisk.setVisible(true);
-        UaktualnijPrzycisk.setVisible(true);
-        wyszukajWszystkichPrzycisk.setVisible(true);
-        PanelPotwierdzenia.setVisible(false);
-        PanelZarzadzania.setVisible(true);
-        Id.setVisible(true);
-        LabelId.setVisible(true);
+        if (TabelaAdres.isVisible()) {
+            noweDane1.setVisible(false);
+            Potwierdz.setVisible(false);
+            WyszukajPrzycisk.setVisible(true);
+            UsuńPrzycisk.setVisible(true);
+            UaktualnijPrzycisk.setVisible(true);
+            wyszukajWszystkichPrzycisk.setVisible(true);
+            PanelPotwierdzenia.setVisible(false);
+            PanelZarzadzania.setVisible(true);
+            Id.setVisible(true);
+            LabelId.setVisible(true);
+        } else {
+            noweDane.setVisible(false);
+            Potwierdz.setVisible(false);
+            WyszukajPrzycisk.setVisible(true);
+            UsuńPrzycisk.setVisible(true);
+            UaktualnijPrzycisk.setVisible(true);
+            wyszukajWszystkichPrzycisk.setVisible(true);
+            PanelPotwierdzenia.setVisible(false);
+            PanelZarzadzania.setVisible(true);
+            Id.setVisible(true);
+            LabelId.setVisible(true);
+        }
     }
 
     @FXML
@@ -497,46 +575,85 @@ public class ControllerBaza {
         String textEmail = UEmail.getText();
         String textTelefon = Utelefon.getText();
         String textDataurodzenia = UDataUrodzenia.getText();
+        String textMiasto = UMiasto.getText();
+        String textUlica = UUlica.getText();
+        String textNumerDomu = UNumerDomu.getText();
+        String textKodPocztowy = UKodPocztowy.getText();
 
-        if (Uimie == NullPointerException) {
-            Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano imienia!", ButtonType.OK);
-            BrakDanych.setTitle("Błąd");
-            BrakDanych.show();
-        }
+        if (TabelaAdres.isVisible()) {
+            if (UMiasto == NullPointerException) {
+                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano miasta!", ButtonType.OK);
+                BrakDanych.setTitle("Błąd");
+                BrakDanych.show();
+            }
 
-        if (Unazwisko == NullPointerException) {
-            Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano nazwiska!", ButtonType.OK);
-            BrakDanych.setTitle("Błąd");
-            BrakDanych.show();
-        }
+            if (UUlica == NullPointerException) {
+                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano ulicy!", ButtonType.OK);
+                BrakDanych.setTitle("Błąd");
+                BrakDanych.show();
+            }
 
-        if (UEmail == NullPointerException) {
-            Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano adresu email!", ButtonType.OK);
-            BrakDanych.setTitle("Błąd");
-            BrakDanych.show();
-        }
+            if (UNumerDomu == NullPointerException) {
+                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano adresu numeru domu!", ButtonType.OK);
+                BrakDanych.setTitle("Błąd");
+                BrakDanych.show();
+            }
 
-        if (Utelefon == NullPointerException) {
-            Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano Telefonu!", ButtonType.OK);
-            BrakDanych.setTitle("Błąd");
-            BrakDanych.show();
-        }
+            if (UKodPocztowy == NullPointerException) {
+                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano Kodu!", ButtonType.OK);
+                BrakDanych.setTitle("Błąd");
+                BrakDanych.show();
+            }
 
-        if (UDataUrodzenia == NullPointerException) {
-            Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano Daty urodzenia!", ButtonType.OK);
-            BrakDanych.setTitle("Błąd");
-            BrakDanych.show();
-        }
 
-        if (Uimie == NullPointerException && Unazwisko == NullPointerException && UEmail == NullPointerException && Utelefon == NullPointerException && UDataUrodzenia == NullPointerException) {
-            Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wprowadzono danych do aktualizacji", ButtonType.OK);
-            BrakDanych.setTitle("Błąd");
-            BrakDanych.show();
+            if (UMiasto == NullPointerException && UUlica == NullPointerException && UNumerDomu == NullPointerException && UKodPocztowy == NullPointerException) {
+                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wprowadzono danych do aktualizacji", ButtonType.OK);
+                BrakDanych.setTitle("Błąd");
+                BrakDanych.show();
+            } else {
+                AdresFunkcje.ZaktualizujUzytkownika(id, textMiasto, textUlica, textNumerDomu, textKodPocztowy);
+            }
         } else {
-            UzytkownikFunkcje.ZaktualizujUzytkownika(id, textImie, textNazwisko, textEmail, textTelefon, textDataurodzenia);
+            if (Uimie == NullPointerException) {
+                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano imienia!", ButtonType.OK);
+                BrakDanych.setTitle("Błąd");
+                BrakDanych.show();
+            }
+
+            if (Unazwisko == NullPointerException) {
+                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano nazwiska!", ButtonType.OK);
+                BrakDanych.setTitle("Błąd");
+                BrakDanych.show();
+            }
+
+            if (UEmail == NullPointerException) {
+                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano adresu email!", ButtonType.OK);
+                BrakDanych.setTitle("Błąd");
+                BrakDanych.show();
+            }
+
+            if (Utelefon == NullPointerException) {
+                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano Telefonu!", ButtonType.OK);
+                BrakDanych.setTitle("Błąd");
+                BrakDanych.show();
+            }
+
+            if (UDataUrodzenia == NullPointerException) {
+                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wpisano Daty urodzenia!", ButtonType.OK);
+                BrakDanych.setTitle("Błąd");
+                BrakDanych.show();
+            }
+
+            if (Uimie == NullPointerException && Unazwisko == NullPointerException && UEmail == NullPointerException && Utelefon == NullPointerException && UDataUrodzenia == NullPointerException) {
+                Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie wprowadzono danych do aktualizacji", ButtonType.OK);
+                BrakDanych.setTitle("Błąd");
+                BrakDanych.show();
+            } else {
+                UzytkownikFunkcje.ZaktualizujUzytkownika(id, textImie, textNazwisko, textEmail, textTelefon, textDataurodzenia);
+            }
         }
         Anuluj();
-        Wyszukaj();
+        WyswietlWszystkich();
     }
 
     //----------------------------------------------------Panel--------------------------------------------------------//

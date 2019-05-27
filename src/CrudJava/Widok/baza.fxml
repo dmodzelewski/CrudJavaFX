@@ -43,6 +43,7 @@
             <Label text="Ulica" />
             <Label text="Numer Domu" />
             <Label text="kod Pocztowy" />
+             <Label text="Id osoby" />
          </children>
       </VBox>
         <VBox fx:id="OsobaInfo" layoutX="5.0" layoutY="58.0" prefHeight="133.0" prefWidth="89.0" spacing="12.0">
@@ -81,7 +82,7 @@
             <TableColumn fx:id="UlicaTabela" prefWidth="73.0" text="Ulica" />
             <TableColumn fx:id="NumerDomuTabela" prefWidth="99.0" text="Numer domu" />
             <TableColumn fx:id="KodPocztowyTabela" prefWidth="86.0" text="kod Pocztowy" />
-            <TableColumn fx:id="idOsobaIdTabela" prefWidth="60.0" text="OsoobaId" />
+            <TableColumn fx:id="idOsobaIdTabela" prefWidth="60.0" text="OsobaId" />
          </columns>
       </TableView>
         <ToolBar fx:id="PanelZarzadzania" layoutX="187.0" layoutY="95.0" prefHeight="40.0" prefWidth="524.0">
@@ -89,18 +90,26 @@
                 <Button fx:id="WyszukajPrzycisk" mnemonicParsing="false" onAction="#Wyszukaj" prefHeight="25.0" prefWidth="79.0" text="Wyszukaj" />
                 <Button fx:id="UsuńPrzycisk" mnemonicParsing="false" onAction="#Usun" prefHeight="25.0" prefWidth="56.0" text="Usuń" />
                 <Button fx:id="UaktualnijPrzycisk" mnemonicParsing="false" onAction="#Uaktualnij" prefHeight="25.0" prefWidth="86.0" text="Uaktualnij" />
-                <Button fx:id="wyszukajWszystkichPrzycisk" mnemonicParsing="false" onAction="#Wyswietl" prefHeight="25.0" prefWidth="134.0" text="Wyszukaj Wszystkich" />
+                <Button fx:id="wyszukajWszystkichPrzycisk" mnemonicParsing="false" onAction="#WyswietlWszystkich" prefHeight="25.0" prefWidth="134.0" text="Wyszukaj Wszystkich" />
             </items>
         </ToolBar>
+      <ToolBar fx:id="noweDane1" layoutX="208.0" layoutY="54.0" prefHeight="40.0" prefWidth="353.0" visible="false">
+         <items>
+            <TextField fx:id="UMiasto" onKeyReleased="#WpisywanieDanychDoUaktualnianiaAdresu" prefHeight="25.0" prefWidth="80.0" promptText="Miasto" />
+            <TextField fx:id="UUlica" onKeyReleased="#WpisywanieDanychDoUaktualnianiaAdresu" prefHeight="25.0" prefWidth="80.0" promptText="Ulica" />
+            <TextField fx:id="UNumerDomu" onKeyReleased="#WpisywanieDanychDoUaktualnianiaAdresu" prefHeight="25.0" prefWidth="80.0" promptText="Numer Domu" />
+            <TextField fx:id="UKodPocztowy" onKeyReleased="#WpisywanieDanychDoUaktualnianiaAdresu" prefHeight="25.0" prefWidth="80.0" promptText="Kod Pocztowy" />
+         </items>
+      </ToolBar>
         <ToolBar fx:id="noweDane" layoutX="194.0" layoutY="54.0" prefHeight="40.0" prefWidth="440.0" visible="false">
-            <items>
-                <TextField fx:id="Uimie" onKeyReleased="#WpisywanieDanychDoUaktualniania" prefHeight="25.0" prefWidth="80.0" promptText="Imię" />
-                <TextField fx:id="Unazwisko" onKeyReleased="#WpisywanieDanychDoUaktualniania" prefHeight="25.0" prefWidth="80.0" promptText="Nazwisko" />
-                <TextField fx:id="UEmail" onKeyReleased="#WpisywanieDanychDoUaktualniania" prefHeight="25.0" prefWidth="80.0" promptText="Email" />
-                <TextField fx:id="Utelefon" onKeyReleased="#WpisywanieDanychDoUaktualniania" prefHeight="25.0" prefWidth="80.0" promptText="Telefon" />
-                <TextField fx:id="UDataUrodzenia" onKeyReleased="#WpisywanieDanychDoUaktualniania" prefHeight="25.0" prefWidth="80.0" promptText="Data Urodzenia" />
-            </items>
-        </ToolBar>
+        <items>
+            <TextField fx:id="Uimie" onKeyReleased="#WpisywanieDanychDoUaktualnianiaUzytkownika" prefHeight="25.0" prefWidth="80.0" promptText="Imię" />
+            <TextField fx:id="Unazwisko" onKeyReleased="#WpisywanieDanychDoUaktualnianiaUzytkownika" prefHeight="25.0" prefWidth="80.0" promptText="Nazwisko" />
+            <TextField fx:id="UEmail" onKeyReleased="#WpisywanieDanychDoUaktualnianiaUzytkownika" prefHeight="25.0" prefWidth="80.0" promptText="Email" />
+            <TextField fx:id="Utelefon" onKeyReleased="#WpisywanieDanychDoUaktualnianiaUzytkownika" prefHeight="25.0" prefWidth="80.0" promptText="Telefon" />
+            <TextField fx:id="UDataUrodzenia" onKeyReleased="#WpisywanieDanychDoUaktualnianiaUzytkownika" prefHeight="25.0" prefWidth="80.0" promptText="Data Urodzenia" />
+        </items>
+    </ToolBar>
       <ToolBar fx:id="PanelPotwierdzenia" layoutX="480.0" layoutY="95.0" prefHeight="40.0" prefWidth="201.0">
         <items>
           <Button fx:id="Potwierdz" mnemonicParsing="false" onAction="#ZaktualizujUzytkownika" prefHeight="25.0" prefWidth="94.0" text="Potwierdż" />
