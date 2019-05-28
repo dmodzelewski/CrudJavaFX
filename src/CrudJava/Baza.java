@@ -5,7 +5,7 @@ import java.sql.*;
 public class Baza {
 
     public static final String DRIVER = "org.sqlite.JDBC";
-    public static final String DB_URL = "jdbc:sqlite:Baza.db";
+    public static final String DB_URL = "jdbc:sqlite:b.db";
 
     private static Connection conn;
     private static Statement stmt;
@@ -53,6 +53,7 @@ public class Baza {
     public static void WykonajPolecenieDB(String sql) {
         Statement stmt = null;
         try {
+            WylaczenieDB();
             PolaczenieDB();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);

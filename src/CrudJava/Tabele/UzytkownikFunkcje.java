@@ -69,7 +69,7 @@ public class UzytkownikFunkcje {
     }
 
     public static void ZaktualizujUzytkownika(String id, String imie, String nazwisko, String Email, String Telefon, String DataUrodzenia) {
-        String zapytanie = "UPDATE osoba SET imie = '" + imie + "' , nazwisko = '" + nazwisko + "' , email = '" + Email + "' , telefon = '" + Telefon + "' WHERE id = " + id;
+        String zapytanie = "UPDATE osoba SET imie = '" + imie + "' , nazwisko = '" + nazwisko + "' , email = '" + Email + "' , telefon = '" + Telefon + "' + , data = '"+DataUrodzenia+"' WHERE id = " + id;
         Baza.WykonajPolecenieDB(zapytanie);
 
     }

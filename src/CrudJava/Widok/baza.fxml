@@ -20,8 +20,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="390.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <TextField fx:id="Id" layoutX="194.0" layoutY="61.0" onKeyReleased="#WpisywanieDanychDoDzialania" prefHeight="25.0" prefWidth="67.0" promptText="ID" />
-        <Label fx:id="LabelId" layoutX="222.0" layoutY="46.0" text="ID" />
+        <TextField fx:id="Id" layoutX="194.0" layoutY="61.0" onKeyReleased="#WpisywanieDanychDoDzialania" prefHeight="25.0" prefWidth="67.0" promptText="ID" visible="false" />
+        <Label fx:id="LabelId" layoutX="222.0" layoutY="46.0" text="ID" visible="false" />
         <Label layoutX="9.0" layoutY="231.0">
             <font>
                 <Font name="System Bold" size="12.0" />
@@ -65,9 +65,9 @@
          </children>
       </VBox>
         <Separator layoutX="180.0" layoutY="14.0" orientation="VERTICAL" prefHeight="333.0" prefWidth="7.0" />
-        <TableView fx:id="TabelaOsoba" editable="true" layoutX="194.0" layoutY="139.0" minWidth="-Infinity" prefHeight="219.0" prefWidth="487.0" tableMenuButtonVisible="true">
+        <TableView fx:id="TabelaOsoba" editable="true" layoutX="194.0" layoutY="139.0" minWidth="-Infinity" onMouseClicked="#UstawId" prefHeight="219.0" prefWidth="487.0" tableMenuButtonVisible="true">
             <columns>
-                <TableColumn fx:id="idTabela" prefWidth="57.0" text="Id" />
+                <TableColumn fx:id="idTabela" prefWidth="57.0" text="Lp" />
                 <TableColumn fx:id="ImieTabela" prefWidth="75.0" text="Imie" />
                 <TableColumn fx:id="NazwiskoTabela" prefWidth="73.0" text="Nazwisko" />
                 <TableColumn fx:id="EmailTabela" prefWidth="79.0" text="Email" />
@@ -75,9 +75,9 @@
                 <TableColumn fx:id="DataUrodzeniaTabela" prefWidth="93.0" text="DataUrodzenia" />
             </columns>
         </TableView>
-      <TableView fx:id="TabelaAdres" editable="true" layoutX="194.0" layoutY="139.0" minWidth="-Infinity" prefHeight="219.0" prefWidth="514.0" tableMenuButtonVisible="true" visible="false">
+      <TableView fx:id="TabelaAdres" editable="true" layoutX="194.0" layoutY="139.0" minWidth="-Infinity" onMouseClicked="#UstawId" prefHeight="219.0" prefWidth="514.0" tableMenuButtonVisible="true" visible="false">
          <columns>
-            <TableColumn fx:id="idTabela1Adres" prefWidth="57.0" text="Id" />
+            <TableColumn fx:id="idTabela1Adres" prefWidth="57.0" text="Lp" />
             <TableColumn fx:id="MiastoTabela" prefWidth="75.0" text="Miasto" />
             <TableColumn fx:id="UlicaTabela" prefWidth="73.0" text="Ulica" />
             <TableColumn fx:id="NumerDomuTabela" prefWidth="99.0" text="Numer domu" />
@@ -103,11 +103,11 @@
       </ToolBar>
         <ToolBar fx:id="noweDane" layoutX="194.0" layoutY="54.0" prefHeight="40.0" prefWidth="440.0" visible="false">
         <items>
-            <TextField fx:id="Uimie" onKeyReleased="#WpisywanieDanychDoUaktualnianiaUzytkownika" prefHeight="25.0" prefWidth="80.0" promptText="Imię" />
-            <TextField fx:id="Unazwisko" onKeyReleased="#WpisywanieDanychDoUaktualnianiaUzytkownika" prefHeight="25.0" prefWidth="80.0" promptText="Nazwisko" />
-            <TextField fx:id="UEmail" onKeyReleased="#WpisywanieDanychDoUaktualnianiaUzytkownika" prefHeight="25.0" prefWidth="80.0" promptText="Email" />
-            <TextField fx:id="Utelefon" onKeyReleased="#WpisywanieDanychDoUaktualnianiaUzytkownika" prefHeight="25.0" prefWidth="80.0" promptText="Telefon" />
-            <TextField fx:id="UDataUrodzenia" onKeyReleased="#WpisywanieDanychDoUaktualnianiaUzytkownika" prefHeight="25.0" prefWidth="80.0" promptText="Data Urodzenia" />
+            <TextField fx:id="Uimie" prefHeight="25.0" prefWidth="80.0" promptText="Imię" />
+            <TextField fx:id="Unazwisko" prefHeight="25.0" prefWidth="80.0" promptText="Nazwisko" />
+            <TextField fx:id="UEmail" prefHeight="25.0" prefWidth="80.0" promptText="Email" />
+            <TextField fx:id="Utelefon" prefHeight="25.0" prefWidth="80.0" promptText="Telefon" />
+            <TextField fx:id="UDataUrodzenia" prefHeight="25.0" prefWidth="80.0" promptText="Data Urodzenia" />
         </items>
     </ToolBar>
       <ToolBar fx:id="PanelPotwierdzenia" layoutX="480.0" layoutY="95.0" prefHeight="40.0" prefWidth="201.0">

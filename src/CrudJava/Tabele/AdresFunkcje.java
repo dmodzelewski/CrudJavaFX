@@ -6,6 +6,9 @@ import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 public class AdresFunkcje {
     public static void DodajUzytkownika(Integer id, String miasto, String ulica, String nrDomu, String kodPocztowy, Integer idOsoby) {
@@ -38,7 +41,7 @@ public class AdresFunkcje {
         String zapytanie = "Select * FROM adres where id = " + id;
         ResultSet wynikzBazy = Baza.WyszukajWDB(zapytanie);
 
-        ObservableList<Adres> TabelaAdres = ZmienTyp(wynikzBazy);
+        ObservableList<Adres> TabelaAdres = ZmienTyp(wynikzBazy,id);
         return TabelaAdres;
     }
 
@@ -47,12 +50,39 @@ public class AdresFunkcje {
         try {
             while (wynik.next()) {
                 Adres u = new Adres();
+                String uo = wynik.getString("idOsoby");
+                ObservableList<Uzytkownik> uz = UzytkownikFunkcje.WyszukajUzytkownika(uo);
+                String obcy = uz.get(0).getImie() +"\n" + uz.get(0).getNazwisko() +"\n" + uz.get(0).getEmail()+"\n" + uz.get(0).getTelefon() +"\n" + uz.get(0).getDataUrodzenia();
                 u.setId(wynik.getString("ID"));
                 u.setMiasto(wynik.getString("Miasto"));
                 u.setUlica(wynik.getString("Ulica"));
                 u.setNumerDomu(wynik.getString("nrDomu"));
                 u.setKodPocztowy(wynik.getString("kodPocztowy"));
-                u.setIdOsoba(wynik.getString("idOsoby"));
+                String i = u.getIdOsoba();
+                u.setIdOsoba(obcy);
+                adres.add(u);
+            }
+        } catch (SQLException e) {
+            System.out.println("Nie można zamienić typu ResultSet na ObervableList" + e);
+        }
+        return adres;
+    }
+
+    public static ObservableList<Adres> ZmienTyp(ResultSet wynik,String id) {
+        ObservableList<Adres> adres = FXCollections.observableArrayList();
+        try {
+            while (wynik.next()) {
+                Adres u = new Adres();
+                ObservableList<Uzytkownik> uz = UzytkownikFunkcje.WyszukajUzytkownika(id);
+
+                String obcy = uz.get(0).getImie() +"\n" + uz.get(0).getNazwisko() +"\n" + uz.get(0).getEmail()+"\n" + uz.get(0).getTelefon() +"\n" + uz.get(0).getDataUrodzenia();
+                u.setId(wynik.getString("ID"));
+                u.setMiasto(wynik.getString("Miasto"));
+                u.setUlica(wynik.getString("Ulica"));
+                u.setNumerDomu(wynik.getString("nrDomu"));
+                u.setKodPocztowy(wynik.getString("kodPocztowy"));
+                String i = u.getIdOsoba();
+                u.setIdOsoba(obcy);
                 adres.add(u);
             }
         } catch (SQLException e) {

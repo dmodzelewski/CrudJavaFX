@@ -11,6 +11,9 @@ import CrudJava.Tabele.UzytkownikFunkcje;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
+import java.lang.reflect.InvocationTargetException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -110,8 +113,6 @@ public class ControllerBaza {
     @FXML
     private ToolBar PanelPotwierdzenia;
     @FXML
-    private Label LabelId;
-    @FXML
     private MenuItem Osoba;
     @FXML
     private MenuItem Adres;
@@ -138,10 +139,6 @@ public class ControllerBaza {
         UsuńPrzycisk.setDisable(true);
         Potwierdz.setVisible(false);
         noweDane.setVisible(false);
-        Unazwisko.setDisable(true);
-        UEmail.setDisable(true);
-        Utelefon.setDisable(true);
-        UDataUrodzenia.setDisable(true);
         dodajUzytkownika.setDisable(true);
         PanelPotwierdzenia.setVisible(false);
         Potwierdz.setDisable(true);
@@ -152,6 +149,7 @@ public class ControllerBaza {
         EmailTabela.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
         TelefonTabela.setCellValueFactory(cellData -> cellData.getValue().telefonProperty());
         DataUrodzeniaTabela.setCellValueFactory(cellData -> cellData.getValue().dataUrodzeniaProperty());
+
 
         idTabela1Adres.setCellValueFactory(cellDara -> cellDara.getValue().idAdresProperty());
         MiastoTabela.setCellValueFactory(cellData -> cellData.getValue().miastoProperty());
@@ -193,10 +191,20 @@ public class ControllerBaza {
         String textidOsoba = idOsoby.getText();
         boolean miastoPoprawnosc = textMiasto.isEmpty() | textMiasto.trim().isEmpty();
         Walidacja(idOsoby);
+        boolean czyOsobaIstnieje = true;
+        if (Integer.parseInt(idOsoby.getText()) <= UzytkownikFunkcje.WyszukajUzytkownikow().size()) {
+            Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Nie ma takiego użytkownika o takim id  ", ButtonType.OK);
+            BrakDanych.setTitle("Błąd");
+            BrakDanych.show();
+            czyOsobaIstnieje = false;
+        } else {
+            czyOsobaIstnieje = true;
+        }
+
         boolean ulicaPoprawnosc = textUlica.isEmpty() | textUlica.trim().isEmpty();
         boolean numerDomuPoprawnosc = textNumerDomu.isEmpty() | textNumerDomu.trim().isEmpty();
         boolean KodPocztowyPoprawnosc = textKodPocztowy.isEmpty() | textKodPocztowy.trim().isEmpty();
-        boolean idOsobyPoprawnosc = textidOsoba.isEmpty() | textidOsoba.trim().isEmpty();
+        boolean idOsobyPoprawnosc = textidOsoba.isEmpty() | textidOsoba.trim().isEmpty() | czyOsobaIstnieje;
         Ulica.setDisable(miastoPoprawnosc);
         NumerDomu.setDisable(ulicaPoprawnosc);
         KodPocztowy.setDisable(numerDomuPoprawnosc);
@@ -298,6 +306,21 @@ public class ControllerBaza {
                 dodajUzytkownika.requestFocus();
             }
         });
+        DataUrodzenia.focusedProperty().addListener((arg, stary, zmien) -> {
+            if (!zmien) {
+                String Data_regex= "\\d{4}-\\d{2}-\\d{2}";
+                Pattern pattern;
+                Matcher matcher;
+                pattern = Pattern.compile(Data_regex, Pattern.CASE_INSENSITIVE);
+                matcher = pattern.matcher(DataUrodzenia.getText());
+                if (!matcher.matches()) {
+                    DataUrodzenia.requestFocus();
+                    DataUrodzenia.setStyle("-fx-text-fill: red");
+                } else {
+                    DataUrodzenia.setStyle("-fx-text-fill: green");
+                }
+            }
+        });
     }
 
     @FXML
@@ -310,27 +333,6 @@ public class ControllerBaza {
         });
     }
 
-    @FXML
-    public void WpisywanieDanychDoUaktualnianiaUzytkownika() {
-        String id = Id.getText();
-        String textImie = Uimie.getText();
-        String textNazwisko = Unazwisko.getText();
-        String textEmail = UEmail.getText();
-        String textTelefon = Utelefon.getText();
-        String textDataurodzenia = UDataUrodzenia.getText();
-
-        boolean imiePoprawnosc = textImie.isEmpty() | textImie.trim().isEmpty();
-        boolean nazwiskoPoprawnosc = textNazwisko.isEmpty() | textNazwisko.trim().isEmpty();
-        boolean emailPoprawnosc = textEmail.isEmpty() | textEmail.trim().isEmpty();
-        boolean telefonPoprawnosc = textTelefon.isEmpty() | textTelefon.trim().isEmpty();
-        boolean DataUrodzzeniaPoprawnosc = textDataurodzenia.isEmpty() | textDataurodzenia.trim().isEmpty();
-        Unazwisko.setDisable(imiePoprawnosc);
-        UEmail.setDisable(nazwiskoPoprawnosc);
-        Utelefon.setDisable(emailPoprawnosc);
-        UDataUrodzenia.setDisable(telefonPoprawnosc);
-        Potwierdz.setDisable(DataUrodzzeniaPoprawnosc);
-
-    }
 
     @FXML
     public void WpisywanieDanychDoUaktualnianiaAdresu() {
@@ -405,7 +407,7 @@ public class ControllerBaza {
     public void Wyszukaj() {
         String id = Id.getText();
         if (id.isEmpty()) {
-            Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Wpisz Id!", ButtonType.OK);
+            Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Zaznacz bądź utwórz użytkownika!", ButtonType.OK);
             BrakDanych.setTitle("Błąd");
             BrakDanych.show();
             UaktualnijPrzycisk.setDisable(true);
@@ -419,7 +421,7 @@ public class ControllerBaza {
                 } else {
                     UaktualnijPrzycisk.setDisable(true);
                     UsuńPrzycisk.setDisable(true);
-                    Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Brak adresu o ID równym " + id, ButtonType.OK);
+                    Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Brak adresu  " + id, ButtonType.OK);
                     BrakDanych.setTitle("Błąd");
                     BrakDanych.show();
                 }
@@ -432,7 +434,7 @@ public class ControllerBaza {
                 } else {
                     UaktualnijPrzycisk.setDisable(true);
                     UsuńPrzycisk.setDisable(true);
-                    Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Brak Użytkownika o ID równym " + id, ButtonType.OK);
+                    Alert BrakDanych = new Alert(Alert.AlertType.ERROR, "Brak Użytkownika  " + id, ButtonType.OK);
                     BrakDanych.setTitle("Błąd");
                     BrakDanych.show();
                 }
@@ -518,8 +520,26 @@ public class ControllerBaza {
                 wyszukajWszystkichPrzycisk.setVisible(false);
                 PanelPotwierdzenia.setVisible(true);
                 PanelZarzadzania.setVisible(false);
-                Id.setVisible(false);
-                LabelId.setVisible(false);
+
+
+                String zapytanie = "Select * FROM osoba where id = " + id;
+                ResultSet wynikzBazy = Baza.WyszukajWDB(zapytanie);
+                try {
+
+                    String textMiasto = wynikzBazy.getString(2);
+                    String textUlica = wynikzBazy.getString(3);
+                    String textNumerDomu = wynikzBazy.getString(4);
+                    String textKodPocztowy = wynikzBazy.getString(5);
+
+
+                    UMiasto.setText(textMiasto);
+                    UUlica.setText(textUlica);
+                    UNumerDomu.setText(textNumerDomu);
+                    UKodPocztowy.setText(textKodPocztowy);
+                    Potwierdz.setDisable(false);
+
+                } catch (SQLException e) {
+                }
             }
         } else {
             if (id.isEmpty()) {
@@ -527,6 +547,7 @@ public class ControllerBaza {
                 BrakDanych.setTitle("Błąd");
                 BrakDanych.show();
             } else {
+
                 noweDane.setVisible(true);
                 Potwierdz.setVisible(true);
                 WyszukajPrzycisk.setVisible(false);
@@ -535,8 +556,28 @@ public class ControllerBaza {
                 wyszukajWszystkichPrzycisk.setVisible(false);
                 PanelPotwierdzenia.setVisible(true);
                 PanelZarzadzania.setVisible(false);
-                Id.setVisible(false);
-                LabelId.setVisible(false);
+
+
+                Potwierdz.setDisable(false);
+
+                String zapytanie = "Select * FROM osoba where id = " + id;
+                ResultSet wynikzBazy = Baza.WyszukajWDB(zapytanie);
+                try {
+
+
+                    String textImie = wynikzBazy.getString(2);
+                    String textNazwisko = wynikzBazy.getString(3);
+                    String textEmail = wynikzBazy.getString(4);
+                    String textTelefon = wynikzBazy.getString(5);
+                    String textDataurodzenia = wynikzBazy.getString(6);
+
+                    Uimie.setText(textImie);
+                    Unazwisko.setText(textNazwisko);
+                    UEmail.setText(textEmail);
+                    Utelefon.setText(textTelefon);
+                    UDataUrodzenia.setText(textDataurodzenia);
+                } catch (SQLException e) {
+                }
             }
         }
     }
@@ -552,8 +593,7 @@ public class ControllerBaza {
             wyszukajWszystkichPrzycisk.setVisible(true);
             PanelPotwierdzenia.setVisible(false);
             PanelZarzadzania.setVisible(true);
-            Id.setVisible(true);
-            LabelId.setVisible(true);
+
         } else {
             noweDane.setVisible(false);
             Potwierdz.setVisible(false);
@@ -563,8 +603,7 @@ public class ControllerBaza {
             wyszukajWszystkichPrzycisk.setVisible(true);
             PanelPotwierdzenia.setVisible(false);
             PanelZarzadzania.setVisible(true);
-            Id.setVisible(true);
-            LabelId.setVisible(true);
+
         }
     }
 
@@ -692,6 +731,32 @@ public class ControllerBaza {
         alert.setHeaderText("To jest aplikacja CRUD z wykorzystaniem javaFX oraz sqlite");
         alert.setContentText("Po więcej informacji spytaj twórcę");
         alert.show();
+    }
+
+    @FXML
+    public void UstawId() {
+        Id.setText(klik());
+    }
+
+    @FXML
+    public String klik() {
+        if (TabelaAdres.isVisible()) {
+            TablePosition pos = (TablePosition) TabelaAdres.getSelectionModel().getSelectedCells().get(0);
+            int row = pos.getRow();
+            Object item = TabelaAdres.getItems().get(row);
+            TableColumn col = (TableColumn) TabelaAdres.getColumns().get(0);
+            String data = (String) col.getCellObservableValue(item).getValue();
+
+            return data;
+        } else {
+            TablePosition pos = (TablePosition) TabelaOsoba.getSelectionModel().getSelectedCells().get(0);
+            int row = pos.getRow();
+            Object item = TabelaOsoba.getItems().get(row);
+            TableColumn col = (TableColumn) TabelaOsoba.getColumns().get(0);
+            String data = (String) col.getCellObservableValue(item).getValue();
+            return data;
+        }
+
     }
 }
 
